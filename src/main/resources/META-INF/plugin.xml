@@ -1,0 +1,51 @@
+<idea-plugin>
+    <id>com.rayt.plugin.mvvmtemplate</id>
+    <name>MVVM Template</name>
+    <vendor email="acc85@sky.com" url="http://www.google.com">RayT development</vendor>
+
+    <description><![CDATA[Adds MVVM template.<br>]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.android</depends>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+
+        <!-- Contextual menu -->
+        <group id="DroidconPlugin.NewMenu">
+
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewElement"/>
+
+            <group id="DroidconPlugin.NewMenu.Droidcon"
+                   popup="true"
+                   text="_Droidcon"
+                   icon="/icons/icon_blue_droid.png"
+                   description="Droidcon menu">
+
+
+                <action id="DroidconPlugin.NewMenu.Droidcon.Wizard"
+                        class="com.rayt.plugin.mvvmtemplate.actions.actions.WizardAction"
+                        text="_Wizard"
+                        icon="/icons/wizard.png"
+                        description="Basic Wizard Example"/>
+
+                <action id="DroidconPlugin.NewMenu.Droidcon.Template"
+                        class="com.rayt.plugin.mvvmtemplate.actions.actions.TemplateActivityAction"
+                        text="_Template Example"
+                        icon="/icons/template.png"
+                        description="An example of template integration inside a plugin"/>
+            </group>
+        </group>
+
+    </actions>
+</idea-plugin>

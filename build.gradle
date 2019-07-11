@@ -1,0 +1,80 @@
+plugins {
+    id 'org.jetbrains.intellij' version '0.4.9'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+}
+
+group 'com.rayt.plugin'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+
+
+Properties properties = new Properties()
+File localPropertiesFile = new File('local.properties')
+def androidStudioPath = '/mnt/tools/androidstudio'
+if (localPropertiesFile.exists()) {
+    def localProperties = project.rootProject.file('local.properties').newDataInputStream()
+    properties.load(localProperties)
+    androidStudioPath = properties.getProperty('ANDROID_STUDIO_PATH')
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version '2019.1.3'
+    alternativeIdePath androidStudioPath
+    pluginName project.PLUGIN_NAME
+    downloadSources false
+    updateSinceUntilBuild false
+    sameSinceUntilBuild false
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+patchPluginXml {
+    changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+
+
+project.afterEvaluate {
+
+    prepareSandbox.doLast {
+        copy {
+            from 'templates'
+            into "build/idea-sandbox/plugins/" + project.PLUGIN_NAME + "/templates"
+            include '**/*'
+        }
+    }
+
+    buildPlugin.doLast {
+        File zipFile = project.tasks.findByName("buildPlugin").outputs.files[0]
+
+        File template = new File('updatePlugins_tmpl.xml')
+        String templateContent = new StringBuffer(template.text.toString())
+        templateContent = templateContent.replaceAll("#package", GROUP)
+        templateContent = templateContent.replaceAll("#filename", zipFile.getName())
+        templateContent = templateContent.replaceAll("#version", VERSION)
+
+        File output = new File('build/distributions/updatePlugins.xml')
+        output.getParentFile().mkdir()
+        output.createNewFile()
+        output.text = templateContent
+    }
+}
