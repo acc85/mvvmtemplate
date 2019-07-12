@@ -1,8 +1,11 @@
 package com.rayt.plugin.mvvmtemplate.actions.actions
 
+import com.android.tools.idea.gradle.npw.project.GradleAndroidModuleTemplate
 import com.android.tools.idea.gradle.project.importing.AndroidGradleProjectImportProvider
+import com.android.tools.idea.npw.ideahost.AndroidModuleBuilder
 import com.android.tools.idea.npw.model.RenderTemplateModel
 import com.android.tools.idea.wizard.model.ModelWizard
+import com.intellij.ide.projectWizard.NewProjectWizard
 import com.intellij.ide.util.newProjectWizard.AddModuleWizard
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.actionSystem.AnAction
@@ -31,6 +34,18 @@ class ModelModuleAction : AnAction() {
 
 
     override fun actionPerformed(e: AnActionEvent) {
+
+        val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
+        val basePath: String? = myCurrentProject!!.basePath
+        val projectName: String? = myCurrentProject.name
+        var newProjectWizard = NewProjectWizard(myCurrentProject,ModulesProvider.EMPTY_MODULES_PROVIDER,basePath!!)
+        val projectBuilder = newProjectWizard.projectBuilder
+        projectBuilder.commit(myCurrentProject, null, ModulesProvider.EMPTY_MODULES_PROVIDER);
+//        var myProject: Project? = TestProjectBuilder().createProject("new Project", "C:\\plugins\\test")
+    }
+
+
+    fun runNewModuleWizardInstant(e: AnActionEvent){
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
         val jdk: Sdk? = ProjectRootManager.getInstance(myCurrentProject!!).getProjectSdk()
         val basePath: String? = myCurrentProject.basePath
@@ -43,9 +58,7 @@ class ModelModuleAction : AnAction() {
             CompilerProjectExtension.getInstance(myCurrentProject)?.compilerOutputUrl
         val projectBuilder = addModuleWizard.projectBuilder
         projectBuilder.commit(myCurrentProject, null, ModulesProvider.EMPTY_MODULES_PROVIDER);
-//        var myProject: Project? = TestProjectBuilder().createProject("new Project", "C:\\plugins\\test")
     }
-
 
     fun getProjectProvider(): AndroidGradleProjectImportProvider? {
         for (p: ProjectImportProvider in Extensions.getExtensions(ProjectImportProvider.PROJECT_IMPORT_PROVIDER)) {
