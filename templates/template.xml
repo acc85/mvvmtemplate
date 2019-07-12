@@ -39,34 +39,34 @@
             <option id="AppCompatActivity">AppCompatActivity</option>
     </parameter>
 
-    <parameter
-            id="isOrientationPortrait"
-            name="Portrait Orientation"
-            type="boolean"
-            default="true"
-            help="This activity will be in portrait mode." />
+<!--    <parameter-->
+<!--            id="isOrientationPortrait"-->
+<!--            name="Portrait Orientation"-->
+<!--            type="boolean"-->
+<!--            default="true"-->
+<!--            help="This activity will be in portrait mode." />-->
 
-    <parameter
-            id="isLauncher"
-            name="Launcher Activity"
-            type="boolean"
-            default="false"
-            help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
+<!--    <parameter-->
+<!--            id="isLauncher"-->
+<!--            name="Launcher Activity"-->
+<!--            type="boolean"-->
+<!--            default="false"-->
+<!--            help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />-->
 
-    <parameter
-            id="setExtraText"
-            name="Add Extra Text"
-            type="boolean"
-            default="false"
-            help="Adds text to the text view in the activity" />
+<!--    <parameter-->
+<!--            id="setExtraText"-->
+<!--            name="Add Extra Text"-->
+<!--            type="boolean"-->
+<!--            default="false"-->
+<!--            help="Adds text to the text view in the activity" />-->
 
-    <parameter
-            id="extraText"
-            name="Extra Text"
-            type="string"
-            default="Example Extra Text"
-            help="Extra text to be set in the text view in the activity"
-            visibility="setExtraText" />
+<!--    <parameter-->
+<!--            id="extraText"-->
+<!--            name="Extra Text"-->
+<!--            type="string"-->
+<!--            default="Example Extra Text"-->
+<!--            help="Extra text to be set in the text view in the activity"-->
+<!--            visibility="setExtraText" />-->
 
 
 

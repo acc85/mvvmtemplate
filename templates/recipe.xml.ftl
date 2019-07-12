@@ -10,9 +10,4 @@
     <merge from="root/res/values/strings.xml.ftl"
         to="${escapeXmlAttribute(resOut)}/values/strings.xml" />
 
-    <merge from="root/AndroidManifest.xml.ftl"
-             to="${escapeXmlAttribute(manifestOut)}/AndroidManifest.xml" />
-
-    <open file="${escapeXmlAttribute(srcOut)}/${activityName}Activity.java" />
-
 </recipe>

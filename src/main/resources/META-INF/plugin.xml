@@ -44,6 +44,12 @@
                         text="_Template Example"
                         icon="/icons/template.png"
                         description="An example of template integration inside a plugin"/>
+
+                <action id="DroidconPlugin.NewMenu.Droidcon.NewProject"
+                        class="com.rayt.plugin.mvvmtemplate.actions.actions.ModelModuleAction"
+                        text="New Project Example"
+                        icon="/icons/template.png"
+                        description="An example of new project integration inside a plugin"/>
             </group>
         </group>
 

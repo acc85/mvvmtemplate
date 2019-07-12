@@ -100,6 +100,46 @@ class TemplateActivityAction : AnAction() {
             .setProject(module.project)
             .build()
             .show()
+
+
+
+
+
+
+
+//        ModuleManager.getInstance(myCurrentProject!!).modules.forEach {module->
+//            AndroidFacet.getInstance(module)?.let {facet->
+//                myAndroidFacet = AndroidFacet.getInstance(module)
+//                val targetFile = ModuleRootManager.getInstance(module).getContentRoots()
+//                var targetDirectory = targetFile[0]
+//                val ass = GradleAndroidModuleTemplate.createDefaultTemplateAt(File(targetFile[0].canonicalPath))
+//                val androidSourceSets = AndroidPackageUtils.getModuleTemplates(myAndroidFacet!!, targetDirectory)
+//                val packageName = AndroidPackageUtils.getPackageForApplication(myAndroidFacet!!)
+//                myTemplateModel = RenderTemplateModel(
+//                    myAndroidFacet!!, TemplateHandle(templateDirectory), packageName, ass, "",
+//                    object : ProjectSyncInvoker {
+//                        override fun syncProject(p0: Project) {
+//
+//                        }
+//                    }, false
+//                )
+//                val wizardBuilder = ModelWizard.Builder()
+//                val step = ConfigureTemplateParametersStep(
+//                    myTemplateModel!!,
+//                    "Configure Activity",
+//                    androidSourceSets
+//                )
+//                wizardBuilder.addStep(step)
+//                val modelWizard = wizardBuilder.build()
+//                // applied at the end of the process
+//                modelWizard.addResultListener(MyResultListener())
+//                // create and show the dialog
+//                StudioWizardDialogBuilder(modelWizard, "New Android Activity")
+//                    .setProject(module.project)
+//                    .build()
+//                    .show()
+//            }
+//        }
     }
 
 
