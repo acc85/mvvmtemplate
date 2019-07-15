@@ -20,6 +20,7 @@ import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.projectImport.ProjectImportProvider
 import org.jetbrains.android.facet.AndroidFacet
+import org.mozilla.javascript.commonjs.module.provider.ModuleSourceProvider
 
 class ModelModuleAction : AnAction() {
 
@@ -37,13 +38,19 @@ class ModelModuleAction : AnAction() {
 
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
         val basePath: String? = myCurrentProject!!.basePath
+
+    }
+
+
+    fun runNewProjectWizard(e:AnActionEvent){
+        val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
+        val basePath: String? = myCurrentProject!!.basePath
         val projectName: String? = myCurrentProject.name
+        var moduleBuilder = AndroidModuleBuilder()
         var newProjectWizard = NewProjectWizard(myCurrentProject,ModulesProvider.EMPTY_MODULES_PROVIDER,basePath!!)
         val projectBuilder = newProjectWizard.projectBuilder
         projectBuilder.commit(myCurrentProject, null, ModulesProvider.EMPTY_MODULES_PROVIDER);
-//        var myProject: Project? = TestProjectBuilder().createProject("new Project", "C:\\plugins\\test")
     }
-
 
     fun runNewModuleWizardInstant(e: AnActionEvent){
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
@@ -52,8 +59,8 @@ class ModelModuleAction : AnAction() {
         val projectName: String? = myCurrentProject.name
         val addModuleWizard = AddModuleWizard(null, basePath!!, getProjectProvider())
         val wizardContext: WizardContext = addModuleWizard.getWizardContext();
-        wizardContext.projectJdk = jdk;
-        wizardContext.projectName = projectName;
+        wizardContext.projectJdk = jdk
+        wizardContext.projectName = projectName
         wizardContext.compilerOutputDirectory =
             CompilerProjectExtension.getInstance(myCurrentProject)?.compilerOutputUrl
         val projectBuilder = addModuleWizard.projectBuilder
