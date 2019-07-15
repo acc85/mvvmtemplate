@@ -1,13 +1,22 @@
 package com.rayt.plugin.mvvmtemplate.actions.actions
 
-import com.android.tools.idea.gradle.npw.project.GradleAndroidModuleTemplate
+import com.android.tools.idea.flags.StudioFlags
 import com.android.tools.idea.gradle.project.importing.AndroidGradleProjectImportProvider
+import com.android.tools.idea.gradle.project.sync.ng.nosyncbuilder.newfacade.androidproject.NewAndroidProject
+import com.android.tools.idea.gradle.project.sync.ng.nosyncbuilder.proto.AndroidProjectProto
 import com.android.tools.idea.npw.ideahost.AndroidModuleBuilder
+import com.android.tools.idea.npw.model.NewProjectModel
 import com.android.tools.idea.npw.model.RenderTemplateModel
+import com.android.tools.idea.npw.project.ChooseAndroidProjectStep
+import com.android.tools.idea.npw.project.deprecated.ConfigureAndroidProjectStep
+import com.android.tools.idea.sdk.wizard.SdkQuickfixUtils
+import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
+import com.android.tools.idea.wizard.model.ModelWizardStep
 import com.intellij.ide.projectWizard.NewProjectWizard
 import com.intellij.ide.util.newProjectWizard.AddModuleWizard
 import com.intellij.ide.util.projectWizard.WizardContext
+import com.intellij.idea.ActionsBundle
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
@@ -20,7 +29,7 @@ import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.projectImport.ProjectImportProvider
 import org.jetbrains.android.facet.AndroidFacet
-import org.mozilla.javascript.commonjs.module.provider.ModuleSourceProvider
+import org.jetbrains.android.sdk.AndroidSdkUtils
 
 class ModelModuleAction : AnAction() {
 
@@ -38,9 +47,66 @@ class ModelModuleAction : AnAction() {
 
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
         val basePath: String? = myCurrentProject!!.basePath
+        funTestNewProject(e)
 
     }
 
+    fun funTestNewProject(e:AnActionEvent){
+        if (!AndroidSdkUtils.isAndroidSdkAvailable()) {
+            SdkQuickfixUtils.showSdkMissingDialog()
+        } else {
+            val projectModel = NewProjectModel()
+            var wizard: ModelWizard? = null
+            val style: StudioWizardDialogBuilder.UxStyle
+            if (StudioFlags.NPW_DYNAMIC_APPS.get() as Boolean) {
+                wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(ChooseAndroidProjectStep(projectModel)).build()
+                style = StudioWizardDialogBuilder.UxStyle.DYNAMIC_APP
+            } else {
+                wizard =
+                    ModelWizard.Builder(*arrayOfNulls(0)).addStep(ConfigureAndroidProjectStep(projectModel)).build()
+                style = StudioWizardDialogBuilder.UxStyle.INSTANT_APP
+            }
+
+            wizard!!.addResultListener(object : ModelWizard.WizardListener {
+                override fun onWizardFinished(result: ModelWizard.WizardResult) {
+                    projectModel.onWizardFinished(result)
+                }
+            })
+            StudioWizardDialogBuilder(wizard, ActionsBundle.actionText("WelcomeScreen.CreateNewProject")).setUxStyle(
+                style
+            ).build().show()
+        }
+
+    }
+
+
+    fun funAndroidNewProject(e:AnActionEvent){
+        if (!AndroidSdkUtils.isAndroidSdkAvailable()) {
+            SdkQuickfixUtils.showSdkMissingDialog()
+        } else {
+            val projectModel = NewProjectModel()
+            var wizard: ModelWizard? = null
+            val style: StudioWizardDialogBuilder.UxStyle
+            if (StudioFlags.NPW_DYNAMIC_APPS.get() as Boolean) {
+                wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(ChooseAndroidProjectStep(projectModel)).build()
+                style = StudioWizardDialogBuilder.UxStyle.DYNAMIC_APP
+            } else {
+                wizard =
+                    ModelWizard.Builder(*arrayOfNulls(0)).addStep(ConfigureAndroidProjectStep(projectModel)).build()
+                style = StudioWizardDialogBuilder.UxStyle.INSTANT_APP
+            }
+
+            wizard!!.addResultListener(object : ModelWizard.WizardListener {
+                override fun onWizardFinished(result: ModelWizard.WizardResult) {
+                    projectModel.onWizardFinished(result)
+                }
+            })
+            StudioWizardDialogBuilder(wizard, ActionsBundle.actionText("WelcomeScreen.CreateNewProject")).setUxStyle(
+                style
+            ).build().show()
+        }
+
+    }
 
     fun runNewProjectWizard(e:AnActionEvent){
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
