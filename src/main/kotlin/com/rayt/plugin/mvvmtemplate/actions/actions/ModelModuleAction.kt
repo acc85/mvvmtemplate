@@ -30,6 +30,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.projectImport.ProjectImportProvider
 import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.android.sdk.AndroidSdkUtils
+import org.jetbrains.android.util.AndroidBundle
 
 class ModelModuleAction : AnAction() {
 
@@ -58,20 +59,16 @@ class ModelModuleAction : AnAction() {
             val projectModel = NewProjectModel()
             var wizard: ModelWizard? = null
             val style: StudioWizardDialogBuilder.UxStyle
-            if (StudioFlags.NPW_DYNAMIC_APPS.get() as Boolean) {
-                wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(ChooseAndroidProjectStep(projectModel)).build()
-                style = StudioWizardDialogBuilder.UxStyle.DYNAMIC_APP
-            } else {
-                wizard =
-                    ModelWizard.Builder(*arrayOfNulls(0)).addStep(ConfigureAndroidProjectStep(projectModel)).build()
-                style = StudioWizardDialogBuilder.UxStyle.INSTANT_APP
-            }
 
-            wizard!!.addResultListener(object : ModelWizard.WizardListener {
-                override fun onWizardFinished(result: ModelWizard.WizardResult) {
-                    projectModel.onWizardFinished(result)
-                }
-            })
+            wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(ModelWizardStep(projectModel,AndroidBundle.message("android.wizard.project.new.choose"))).build()
+            style = StudioWizardDialogBuilder.UxStyle.INSTANT_APP
+
+//            wizard!!.addResultListener(object : ModelWizard.WizardListener {
+//                override fun onWizardFinished(result: ModelWizard.WizardResult) {
+//                    projectModel.onWizardFinished(result)
+//                }
+//            })
+            wizard!!.goForward()
             StudioWizardDialogBuilder(wizard, ActionsBundle.actionText("WelcomeScreen.CreateNewProject")).setUxStyle(
                 style
             ).build().show()
