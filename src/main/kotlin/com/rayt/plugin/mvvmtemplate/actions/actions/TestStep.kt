@@ -62,7 +62,7 @@ import javax.swing.event.ListSelectionEvent
  * Template ("Empty Activity", "Basic", "Nav Drawer", etc)
  * TODO: "No Activity" needs a Template Icon place holder
  */
-class ChooseAndroidProjectStep(model: NewProjectModel) : ModelWizardStep<NewProjectModel>(model, message("android.wizard.project.new.choose")) {
+class TestStep(model: NewProjectModel) : ModelWizardStep<NewProjectModel>(model, message("android.wizard.project.new.choose")) {
     // To have the sequence specified by design, we hardcode the sequence.
     private val ORDERED_ACTIVITY_NAMES = arrayOf(
         "Basic Activity",
@@ -182,18 +182,20 @@ class ChooseAndroidProjectStep(model: NewProjectModel) : ModelWizardStep<NewProj
             val prevFormFactorInfo = formFactorInfoMap[formFactor]
             val templateMinSdk = metadata.minSdk
 
-            if (prevFormFactorInfo == null) {
-                val minSdk = Math.max(templateMinSdk, formFactor.minOfflineApiLevel)
-                val tabPanel = ChooseAndroidProjectPanel(createGallery(title, formFactor))
-                formFactorInfoMap[formFactor] = FormFactorInfo(templateFile, formFactor, minSdk, tabPanel)
-            } else if (templateMinSdk > prevFormFactorInfo.minSdk) {
-                prevFormFactorInfo.minSdk = templateMinSdk
-                prevFormFactorInfo.templateFile = templateFile
-            }
+//            if (prevFormFactorInfo == null) {
+//                val minSdk = Math.max(templateMinSdk, formFactor.minOfflineApiLevel)
+//                val tabPanel = ChooseAndroidProjectPanel(createGallery(title, formFactor))
+//                formFactorInfoMap[formFactor] = FormFactorInfo(templateFile, formFactor, minSdk, tabPanel)
+//            } else if (templateMinSdk > prevFormFactorInfo.minSdk) {
+                prevFormFactorInfo?.minSdk = templateMinSdk
+                prevFormFactorInfo?.templateFile = templateFile
+//            }
         }
 
         myFormFactors.addAll(formFactorInfoMap.values)
-        myFormFactors.sortWith(Comparator.comparing { f -> f.formFactor })
+//        myFormFactors.sortedWith(Comparator.comparing { f -> f.formFactor  })
+//
+//        myFormFactors.sortWith(Comparator.comparing { f -> f.formFactor })
     }
 
     private fun getFilteredTemplateHandles(formFactor: FormFactor): List<TemplateHandle> {
@@ -211,27 +213,27 @@ class ChooseAndroidProjectStep(model: NewProjectModel) : ModelWizardStep<NewProj
         return templateHandles
     }
 
-    private fun createGallery(title: String, formFactor: FormFactor): ASGallery<TemplateRenderer> {
-        val templateHandles = getFilteredTemplateHandles(formFactor)
-
-        val templateRenderers = Lists.newArrayListWithExpectedSize<TemplateRenderer>(templateHandles.size + 2)
-        templateRenderers.add(TemplateRenderer(null, false)) // "Add No Activity" entry
-        for (templateHandle in templateHandles) {
-            templateRenderers.add(TemplateRenderer(templateHandle, false))
-        }
-
-        if (formFactor == FormFactor.MOBILE) {
-            templateRenderers.add(TemplateRenderer(null, true)) // "Native C++" entry
-        }
-
-        val listItems = templateRenderers.toTypedArray()
-
-        val gallery = WizardGallery<TemplateRenderer>(title, ActivityGallery.getTemplateImage(null, false),TemplateRenderer::getImageLabel)
-        gallery.model = JBList.createDefaultListModel(*listItems as Array<Any>)
-        gallery.selectedIndex = getDefaultSelectedTemplateIndex(listItems)
-
-        return gallery
-    }
+//    private fun createGallery(title: String, formFactor: FormFactor): ASGallery<TemplateRenderer> {
+//        val templateHandles = getFilteredTemplateHandles(formFactor)
+//
+//        val templateRenderers = Lists.newArrayListWithExpectedSize<TemplateRenderer>(templateHandles.size + 2)
+//        templateRenderers.add(TemplateRenderer(null, false)) // "Add No Activity" entry
+//        for (templateHandle in templateHandles) {
+//            templateRenderers.add(TemplateRenderer(templateHandle, false))
+//        }
+//
+//        if (formFactor == FormFactor.MOBILE) {
+//            templateRenderers.add(TemplateRenderer(null, true)) // "Native C++" entry
+//        }
+//
+//        val listItems = templateRenderers.toTypedArray()
+//
+//        val gallery = WizardGallery<TemplateRenderer>(title, ActivityGallery.getTemplateImage(null, false),TemplateRenderer::getImageLabel)
+//        gallery.model = JBList.createDefaultListModel(*listItems as Array<Any>)
+//        gallery.selectedIndex = getDefaultSelectedTemplateIndex(listItems)
+//
+//        return gallery
+//    }
 
     private fun getDefaultSelectedTemplateIndex(templateRenderers: Array<TemplateRenderer>): Int {
         for (i in templateRenderers.indices) {
@@ -275,12 +277,12 @@ class ChooseAndroidProjectStep(model: NewProjectModel) : ModelWizardStep<NewProj
             return ActivityGallery.getTemplateImage(myTemplate, myIsCppTemplate)
         }
 
-        companion object{
-            fun getImage(): Function<Image?> {
-                var t:TemplateRenderer = TemplateRenderer(null,false)
-                return ActivityGallery.getTemplateImage(t.myTemplate, t.myIsCppTemplate)
-            }
-        }
+//        companion object{
+//            fun getImage(): Function<Image?> {
+//                var t:TemplateRenderer = TemplateRenderer(null,false)
+//                return ActivityGallery.getTemplateImage(t.myTemplate, t.myIsCppTemplate)
+//            }
+//        }
 
     }
 }

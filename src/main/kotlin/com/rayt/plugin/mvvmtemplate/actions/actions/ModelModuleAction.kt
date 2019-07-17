@@ -8,6 +8,7 @@ import com.android.tools.idea.npw.ideahost.AndroidModuleBuilder
 import com.android.tools.idea.npw.model.NewProjectModel
 import com.android.tools.idea.npw.model.RenderTemplateModel
 import com.android.tools.idea.npw.project.ChooseAndroidProjectStep
+import com.android.tools.idea.npw.project.TestStep
 import com.android.tools.idea.npw.project.deprecated.ConfigureAndroidProjectStep
 import com.android.tools.idea.sdk.wizard.SdkQuickfixUtils
 import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
@@ -49,6 +50,7 @@ class ModelModuleAction : AnAction() {
         val myCurrentProject = e.getData(PlatformDataKeys.PROJECT)
         val basePath: String? = myCurrentProject!!.basePath
         funTestNewProject(e)
+//        funAndroidNewProject(e)
 
     }
 
@@ -60,7 +62,7 @@ class ModelModuleAction : AnAction() {
             var wizard: ModelWizard? = null
             val style: StudioWizardDialogBuilder.UxStyle
 
-            wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(ModelWizardStep(projectModel,AndroidBundle.message("android.wizard.project.new.choose"))).build()
+            wizard = ModelWizard.Builder(*arrayOfNulls(0)).addStep(TestModel(projectModel, "test")).build()
             style = StudioWizardDialogBuilder.UxStyle.INSTANT_APP
 
 //            wizard!!.addResultListener(object : ModelWizard.WizardListener {
